@@ -1,0 +1,16 @@
+{
+  "id": 118650001,
+  "category": {
+    "id": 0,
+    "name": "cachorro"
+  },
+  "name": "Bob",
+  "photoUrls": [],
+  "tags": [
+    {
+      "id": 9,
+      "name": "vacinado"
+    }
+  ],
+  "status": "sold"
+}
