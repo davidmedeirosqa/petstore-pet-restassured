@@ -1,18 +1,20 @@
 // 1- Nome do pacote
 
 // 2- Bibliotecas
-import io.restassured.response.Response; // Classe resposta do Rest-assured
+import static io.restassured.RestAssured.given; // Função given
+// Classe de comparadores do Hamcrest
+import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import org.junit.jupiter.api.MethodOrderer; // Ordem dos @Test
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
-import static io.restassured.RestAssured.config;
-import static io.restassured.RestAssured.given; // Função given
-import static io.restassured.RestAssured.when;
-import static org.hamcrest.Matchers.*; // Classe de comparadores do Hamcrest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // Ordem dos @Test
 
 // 3- Classe
 public class TestPet {
@@ -36,6 +38,7 @@ public class TestPet {
 
     // 3.2.2 - Métodos de testes
     @Test
+    @Order(1)
 
     // #################### POST ####################
     public void testPostPet() throws IOException {
@@ -66,6 +69,7 @@ public class TestPet {
     }
 
     @Test
+    @Order(2)
 
     // #################### GET ####################
     public void testGetPet() {
@@ -96,6 +100,7 @@ public class TestPet {
     }
 
     @Test
+    @Order(3)
 
     // #################### PUT ####################
     public void testPutPet() throws IOException {
@@ -126,6 +131,7 @@ public class TestPet {
     }
 
     @Test
+    @Order(4)
 
     // #################### DEL ####################
     public void testDelPet() {
