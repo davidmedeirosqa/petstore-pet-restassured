@@ -9,7 +9,9 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given; // Função given
+import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.*; // Classe de comparadores do Hamcrest
 
 // 3- Classe
@@ -38,7 +40,7 @@ public class TestPet {
     // #################### POST ####################
     public void testPostPet() throws IOException {
 
-        // Configuração
+        // Configuração - Entrada e saída
         // Carregar os dados do arquivo JSON do pet1
         String jsonBody = readFileJson("src/test/resources/json/pet1.json");
 
@@ -60,7 +62,7 @@ public class TestPet {
                 .body("id", is(petId)) // Verificar se o id é "118650001"(Variável petId)
                 .body("category.name", is(categoryName)) // Verificar se o nome da categoria é "cachorro"
                 .body("tags[0].name", is(tagName)) // Verificar se é "vacinado"
-        ; // Fechamento do Given
+        ; // FechamenFo do Given
     }
 
     @Test
@@ -89,12 +91,13 @@ public class TestPet {
                 .body("name", is(petName))
                 .body("id", is(petId))
                 .body("category.name", is(categoryName))
-                .body("tags[0].name", is(tagName)); // Fechamento do Given
+                .body("tags[0].name", is(tagName))
+        ; // Fechamento do Given
     }
 
     @Test
 
-    // #################### GET ####################
+    // #################### PUT ####################
     public void testPutPet() throws IOException {
 
         // Configuração
@@ -113,7 +116,36 @@ public class TestPet {
                 // Validação
                 .then()
                 .log().all()
-                .statusCode(200);
+                .statusCode(200)
+                .body("name", is(petName))
+                .body("id", is(petId))
+                .body("category.name", is(categoryName))
+                .body("tags[0].name", is(tagName))
+                .body("status", is(status[1])) // Mudança de status (available -> sold)
+        ; // Fechamento do Given
+    }
 
+    @Test
+
+    // #################### DEL ####################
+    public void testDelPet() {
+
+        // Configuração - Entrada e saída
+        given()
+                .contentType(ct)
+                .log().all()
+
+                // Execução
+                .when()
+                .delete(uriPet + "/" + petId)
+
+                // Validação
+                .then()
+                .log().all()
+                .statusCode(200) // Comunicação
+                .body("code", is(200)) // Apagou
+                .body("type", is("unknown")) // Desconhecido
+                .body("message", is(String.valueOf(petId))) // Conversão de number para String e verificação da mensagem  
+        ;
     }
 }
