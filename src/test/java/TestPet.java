@@ -2,19 +2,19 @@
 
 // 2- Bibliotecas
 import static io.restassured.RestAssured.given; // Função given
-// Classe de comparadores do Hamcrest
-import static org.hamcrest.Matchers.is;
+
+import static org.hamcrest.Matchers.is;  // Classe de comparadores do Hamcrest
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.MethodOrderer; // Ordem dos @Test
-import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Order; // Ordem dos @Test
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // Ordem dos @Test
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class) // Ativador da ordem @Test
 
 // 3- Classe
 public class TestPet {
