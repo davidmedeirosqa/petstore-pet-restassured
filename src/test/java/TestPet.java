@@ -76,7 +76,7 @@ public class TestPet {
 
         // Configuração
         // Entrada - petId está definido na classe
-        // Saída - Resultados esperados está definido na classe
+        // Saída - Resultados esperados estão definidos na classe
 
         // Teste pelo Rest-assured
         given()
