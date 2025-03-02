@@ -3,7 +3,7 @@
 // 2- Bibliotecas
 import static io.restassured.RestAssured.given; // Função given
 
-import static org.hamcrest.Matchers.is;  // Classe de comparadores do Hamcrest
+import static org.hamcrest.Matchers.is; // Classe de comparadores do Hamcrest
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -82,6 +82,7 @@ public class TestPet {
         given()
                 .contentType(ct)
                 .log().all()
+                .header("Authorization", "api_key " + TestUser.testLogin())
                 // Get e Del não tem .body()
 
                 // Execução
@@ -95,8 +96,7 @@ public class TestPet {
                 .body("name", is(petName))
                 .body("id", is(petId))
                 .body("category.name", is(categoryName))
-                .body("tags[0].name", is(tagName))
-        ; // Fechamento do Given
+                .body("tags[0].name", is(tagName)); // Fechamento do Given
     }
 
     @Test
@@ -151,7 +151,7 @@ public class TestPet {
                 .statusCode(200) // Comunicação
                 .body("code", is(200)) // Apagou
                 .body("type", is("unknown")) // Desconhecido
-                .body("message", is(String.valueOf(petId))) // Conversão de number para String e verificação da mensagem  
+                .body("message", is(String.valueOf(petId))) // Conversão de number para String e verificação da mensagem
         ;
     }
 }
