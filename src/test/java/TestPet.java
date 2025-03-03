@@ -2,7 +2,6 @@
 
 // 2- Bibliotecas
 import static io.restassured.RestAssured.given; // Função given
-
 import static org.hamcrest.Matchers.is; // Classe de comparadores do Hamcrest
 
 import java.io.IOException;
@@ -13,6 +12,10 @@ import org.junit.jupiter.api.MethodOrderer; // Ordem dos @Test
 import org.junit.jupiter.api.Order; // Ordem dos @Test
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest; // Importação do teste parametrizado
+import org.junit.jupiter.params.provider.CsvFileSource;
+
+import com.google.gson.Gson;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class) // Ativador da ordem @Test
 
@@ -153,5 +156,47 @@ public class TestPet {
                 .body("type", is("unknown")) // Desconhecido
                 .body("message", is(String.valueOf(petId))) // Conversão de number para String e verificação da mensagem
         ;
+    }
+
+    // Data Driven Testing / Teste direcionado por dados / Teste com massa (DDT)
+    // Teste JSON parametrizado
+
+    @ParameterizedTest
+    @Order(5)
+    @CsvFileSource(resources = "/csv/petMassa.csv", numLinesToSkip = 1, delimiter = ',')
+
+    public void testPostPetDDT(
+            int petId,
+            String petName,
+            int catId,
+            String catName,
+            String status1,
+            String status2) // Paramêtros
+    {
+        Pet pet = new Pet(); // Instaciar a classe User como objeto
+        pet.petId = petId;
+        pet.petName = petName;
+        pet.catId = catId;
+        pet.catName = catName;
+        pet.status = status1; // status inicial "available"
+
+        // Criar um JSON para o Body ser enviado a partir da classe Pet e CSV
+        Gson gson = new Gson(); // Instaciar a classe Gson como objeto
+        String jsonBody = gson.toJson(pet);
+
+        given()
+                .contentType(ct)
+                .log().all()
+                .body(jsonBody)
+                .when()
+                .post(uriPet)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("id", is(petId))
+                .body("Name", is(petName))
+                .body("category.id", is(catId))
+                .body("category.name", is(catName))
+                .body("status", is("status1"));
     }
 }
