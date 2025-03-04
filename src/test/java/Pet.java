@@ -7,6 +7,8 @@ public class Pet {
         public String name;
     }
 
+    public Category category;
+
     public String name;
     public String[] photoUrls;
 

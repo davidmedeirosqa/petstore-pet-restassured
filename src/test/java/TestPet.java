@@ -174,10 +174,22 @@ public class TestPet {
             String status2) // Paramêtros
     {
         Pet pet = new Pet(); // Instaciar a classe User como objeto
-        pet.petId = petId;
-        pet.petName = petName;
-        pet.catId = catId;
-        pet.catName = catName;
+        Pet.Category category = pet.new Category(); // Instaciar a classe subclasse Category
+        Pet.Tag[] tags = new Pet.Tag[2]; // Instaciar a subclasse Tag
+        tags[0] = pet.new Tag();
+        tags[1] = pet.new Tag();
+
+        pet.id = petId;
+        pet.category = category; // Associar a pet.category com a subclasse category
+        pet.category.id = catId;
+        pet.category.name = catName;
+        pet.name = petName;
+        // pet.photoUrls; Não é necessário atribuir valor pois está vazio
+        pet.tags = tags; //
+        pet.tags[0].id = 9;
+        pet.tags[0].name = "Vacinado";
+        pet.tags[1].id = 8;
+        pet.tags[1].name = "Vermifugado";
         pet.status = status1; // status inicial "available"
 
         // Criar um JSON para o Body ser enviado a partir da classe Pet e CSV
@@ -194,9 +206,9 @@ public class TestPet {
                 .log().all()
                 .statusCode(200)
                 .body("id", is(petId))
-                .body("Name", is(petName))
+                .body("name", is(petName))
                 .body("category.id", is(catId))
                 .body("category.name", is(catName))
-                .body("status", is("status1"));
+                .body("status", is(status1));
     }
 }
